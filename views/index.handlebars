@@ -1,0 +1,27 @@
+<br />
+<div class="container">
+  <div class="jumbotron">
+    <div class="row card-body">
+      <div class="col-md-12">
+        <h1>SiliconScrapEra</h1>
+      </div>
+      <button type="button" class="btn btn-warning" >Scrape Site</button>
+    </div>
+    <br />
+    <table style="width:100%">
+      <tr>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Author</th>
+      </tr>
+      {{#each articles}}
+        <tr>
+          <td>{{title}}</td>
+          <td>{{date}}</td>
+          <td>{{author}}</td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
+</div>
+
