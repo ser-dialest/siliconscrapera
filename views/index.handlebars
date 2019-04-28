@@ -8,18 +8,28 @@
       <button type="button" class="btn btn-warning" >Scrape Site</button>
     </div>
     <br />
-    <table style="width:100%">
-      <tr>
-        <th>Title</th>
-        <th>Date</th>
-        <th>Author</th>
-      </tr>
-      {{#each articles}}
+    <table style="width:100%" class="table">
+      <thead class="thead-dark">
         <tr>
-          <td>{{title}}</td>
-          <td>{{date}}</td>
-          <td>{{author}}</td>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Author</th>
         </tr>
+      </thead>
+      {{#each articles}}
+        <div>
+          <tr id={{_id}} class="table-light headline" >
+            <td>{{title}}</td>
+            <td>{{date}}</td>
+            <td>{{author}}</td>
+          </tr>
+          <tr class="table-primary extended"> 
+            <td colspan="2">{{blurb}}</td>
+            <td><button onclick="window.open('{{link}}', '_blank');">Read</button></td>  
+          </tr>
+          {{!-- <tr> <td>{{notes}}</td></tr> --}}
+
+        </div>
       {{/each}}
     </table>
   </div>
