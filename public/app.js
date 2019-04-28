@@ -1,30 +1,36 @@
-console.log("loaded");
-
+// Let's make sure everything is ready!
 $(document).ready(() => {
-  console.log("super-loaded");
   $(".headline").on("click", function() {
     console.log("click");
     $(".extended").hide("fast");
-    $(this).next().show("slow");
+    $(this).nextUntil(".headline").show("slow");
   });
+
+  $(".add-note").on("click", function() {
+    let id = $(this).attr("class").split(" ")[1];
+    let note = {
+      body: $(`.body.${id}`).val(),
+      author: $(`.userName.${id}`).val()
+    };
+
+    if (!note.body) {
+      $(`.body.${id}`).attr("placeholder", "You have to tell us what you think to submit!");
+    }
+    else {
+      $.ajax({
+        method: "POST",
+        url: "/articles/" + id,
+        data: note
+      })
+    };
+  })
 });
 
-  // $("p").on("click", function(){
-  //   alert("The paragraph was clicked.");
-  // });
-  
-//   // Whenever someone clicks a p tag
-//   $(document).on("click", "p", function() {
-//     // Empty the notes from the note section
-    // $("#notes").empty();
 //     // Save the id from the p tag
 //     var thisId = $(this).attr("data-id");
   
 //     // Now make an ajax call for the Article
-//     $.ajax({
-//       method: "GET",
-//       url: "/articles/" + thisId
-//     })
+
 //       // With that done, add the note information to the page
 //       .then(function(data) {
 //         console.log(data);

@@ -34,27 +34,25 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 // Routes
 app.get("/", function(req, res) {
     db.Articles.find({})
+        .populate("notes")
         .then(function(dbArticles) {
+            // console.log(dbArticles[0].notes);
             // convert to object 
             var hbsObject = {
                 articles: dbArticles
             }   
-            console.log(hbsObject);
             res.render("index", hbsObject);
         })
         .catch(function(err) {
             //Catch error
             res.json(err);
-        });
-    
-})
+        });    
+});
 
-app.get("/scrape", function(rq, res) {
+app.get("/scrape", function(req, res) {
     axios.get("https://www.siliconera.com/").then(function(response) {
         var $ = cheerio.load(response.data);
-        // An empty array to save the data that we'll scrape
-        $(".post").each(function(element) {
-        
+        $(".post").each(function(i, element) {
             var title = $(element).children("h2").children("a").text();
             var blurb = $(element).children(".postdescription").children("p").text();
             var link = $(element).children("h2").children("a").attr("href");
@@ -73,7 +71,8 @@ app.get("/scrape", function(rq, res) {
             };
             db.Articles.create(results)
                 .then(function(dbArticles) {
-                    console.log(dbArticles);
+                    console.log("scraped!");
+                    // console.log(dbArticles);
                 })
                 .catch(function(err) {
                     console.log(err);
@@ -81,8 +80,29 @@ app.get("/scrape", function(rq, res) {
         });
     });
 });
-  
-  // Listen on port 3000
-  app.listen(PORT, function() {
-    console.log("App running on port 3000!");
-  });
+
+app.post("/articles/:id", function(req, res) {
+    db.Notes.create(req.body)
+        .then(function(note) {
+            return db.Articles.findOneAndUpdate({_id: req.params.id}, { $push: { notes: note._id } }, { new: true });
+        })
+        .then(function(dbArticles) {
+            console.log("refresh!!!");
+            res.json(dbArticles);
+            
+        })
+        .catch(function(err) {
+            //Catch error
+            res.json(err);
+        });
+});
+
+// db.Articles.update({_id: req.params.id.toString()}, { $push: { notes: note._id.toString() } });
+// db.Articles.update({_id: "5cc5429cebeaf80d5463d1ad"}, { $push: { notes: "5cc560c1d4152a4da0eae3b6" } })
+    
+
+
+// Listen on port 3000
+app.listen(PORT, function() {
+console.log("App running on port 3000!");
+});

@@ -6,8 +6,11 @@ var Schema = mongoose.Schema;
 // Create Notes Schema
 var NoteSchema = new Schema({
     // arrays so I can have more than one.
-    title: String,
-    body: String
+    body: {
+        type: String,
+        required: true
+    },
+    author: String
 });
 
 // Make model from Schema

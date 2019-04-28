@@ -17,19 +17,29 @@
         </tr>
       </thead>
       {{#each articles}}
-        <div>
-          <tr id={{_id}} class="table-light headline" >
-            <td>{{title}}</td>
-            <td>{{date}}</td>
+        <tr class="table-light headline" >
+          <td>{{title}}</td>
+          <td>{{date}}</td>
+          <td>{{author}}</td>
+        </tr>
+        <tr class="table-primary extended"> 
+          <td colspan="2">{{blurb}}</td>
+          <td><button onclick="window.open('{{link}}', '_blank');">Read</button></td>  
+        </tr>
+        {{#each notes}}
+          <tr class="table-primary extended"> 
+            <td style="width:100%">{{body}}</td>
             <td>{{author}}</td>
+            <td><button id={{id}} class="delete-note">Delete</button></td>
           </tr>
           <tr class="table-primary extended"> 
-            <td colspan="2">{{blurb}}</td>
-            <td><button onclick="window.open('{{link}}', '_blank');">Read</button></td>  
           </tr>
-          {{!-- <tr> <td>{{notes}}</td></tr> --}}
-
-        </div>
+        {{/each}}
+        <tr class="table-primary extended">
+          <td><input type="text" class="body {{_id}}" name="body" style="width:100%" placeholder="What do you think?"></td>
+          <td><input type="text" class="userName {{_id}}" name="userName" placeholder="Your name"></td>
+          <td><button class="add-note {{_id}}">Submit</button></td>
+        </tr>
       {{/each}}
     </table>
   </div>
