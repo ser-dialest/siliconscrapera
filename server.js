@@ -36,7 +36,6 @@ app.get("/", function(req, res) {
     db.Articles.find({})
         .populate("notes")
         .then(function(dbArticles) {
-            // console.log(dbArticles[0].notes);
             // convert to object 
             var hbsObject = {
                 articles: dbArticles
@@ -69,15 +68,20 @@ app.get("/scrape", function(req, res) {
                 date: date,
                 note: []
             };
-            db.Articles.create(results)
-                .then(function(dbArticles) {
-                    console.log("scraped!");
-                    // console.log(dbArticles);
-                })
-                .catch(function(err) {
-                    console.log(err);
-                });
+            db.Articles.find({title: results.title}).then(match => {
+                if (match.length === 0) {
+                    db.Articles.create(results)
+                        .then(function(dbArticles) {
+                            console.log(dbArticles);
+                        })
+                        .catch(function(err) {
+                            console.log(err);
+                        });
+                }
+            });
         });
+    }).then(() => {
+        res.redirect("/");
     });
 });
 
@@ -87,9 +91,7 @@ app.post("/articles/:id", function(req, res) {
             return db.Articles.findOneAndUpdate({_id: req.params.id}, { $push: { notes: note._id } }, { new: true });
         })
         .then(function(dbArticles) {
-            console.log("refresh!!!");
-            res.json(dbArticles);
-            
+            res.redirect("/");
         })
         .catch(function(err) {
             //Catch error
@@ -97,9 +99,14 @@ app.post("/articles/:id", function(req, res) {
         });
 });
 
-// db.Articles.update({_id: req.params.id.toString()}, { $push: { notes: note._id.toString() } });
-// db.Articles.update({_id: "5cc5429cebeaf80d5463d1ad"}, { $push: { notes: "5cc560c1d4152a4da0eae3b6" } })
-    
+app.delete("/notes/:id", function(req, res) {
+    db.Notes.deleteOne({ _id: req.params.id }, function (err) {
+        if (err) return handleError(err);
+    }).then(() => {
+        res.status(202).end();
+        // res.redirect("/");
+    });
+});
 
 
 // Listen on port 3000

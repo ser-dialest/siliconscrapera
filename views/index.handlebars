@@ -2,10 +2,10 @@
 <div class="container">
   <div class="jumbotron">
     <div class="row card-body">
-      <div class="col-md-12">
-        <h1>SiliconScrapEra</h1>
+      <div class="col-md-12" id="header">
+        <img src="/siliconscrapera_logo.png" alt="">
+        <button type="button" id="scrape" class="btn" >Scrape Site</button>
       </div>
-      <button type="button" class="btn btn-warning" >Scrape Site</button>
     </div>
     <br />
     <table style="width:100%" class="table">
@@ -22,20 +22,20 @@
           <td>{{date}}</td>
           <td>{{author}}</td>
         </tr>
-        <tr class="table-primary extended"> 
+        <tr class="extended"> 
           <td colspan="2">{{blurb}}</td>
           <td><button onclick="window.open('{{link}}', '_blank');">Read</button></td>  
         </tr>
         {{#each notes}}
-          <tr class="table-primary extended"> 
+          <tr class="extended"> 
             <td style="width:100%">{{body}}</td>
             <td>{{author}}</td>
             <td><button id={{id}} class="delete-note">Delete</button></td>
           </tr>
-          <tr class="table-primary extended"> 
+          <tr class="extended"> 
           </tr>
         {{/each}}
-        <tr class="table-primary extended">
+        <tr class="extended">
           <td><input type="text" class="body {{_id}}" name="body" style="width:100%" placeholder="What do you think?"></td>
           <td><input type="text" class="userName {{_id}}" name="userName" placeholder="Your name"></td>
           <td><button class="add-note {{_id}}">Submit</button></td>

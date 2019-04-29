@@ -1,6 +1,31 @@
 body {
-    background-color: green;
+    background-color: #b9db7d;
+
 }
+
+.jumbotron {    
+    background-color: #000000;
+    padding: 2rem;
+}
+
+.extended {
+    background-color: #E1F3FC;
+}
+#header {
+    display: flex;
+    justify-content: space-between;
+}
+
+#scrape {
+    color: #ffffff;
+    background-color: #D50917;
+}
+
+h1 {
+    display: inline;
+    color: #FFFFFF;
+}
+
 
 .extended {
     display: none;
